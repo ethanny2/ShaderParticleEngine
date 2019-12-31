@@ -14,14 +14,15 @@ module.exports = function( grunt ) {
 
     // Specify input files and output paths
     var files = [
-            'src/SPE.js',
-            'src/helpers/SPE.TypedArrayHelper.js',
-            'src/helpers/SPE.ShaderAttribute.js',
-            'src/shaders/SPE.shaderChunks.js',
-            'src/shaders/SPE.shaders.js',
-            'src/core/SPE.utils.js',
-            'src/core/SPE.Group.js',
-            'src/core/SPE.Emitter.js'
+            'src/index.js',
+            // 'src/speIndex.js',
+            'src/helpers/TypedArrayHelper.js',
+            'src/helpers/ShaderAttribute.js',
+            'src/shaders/shaderChunks.js',
+            'src/shaders/shaders.js',
+            'src/core/utils.js',
+            'src/core/Group.js',
+            'src/core/Emitter.js'
         ],
         outputPath = 'build/SPE.js',
         outputPathMin = outputPath.replace( '.js', '.min.js' );
@@ -49,7 +50,12 @@ module.exports = function( grunt ) {
 
     grunt.initConfig( {
         uglify: uglifySettings,
-
+        browserify: {
+            dist: {
+              src: ['src/**/*.js'],
+              dest: 'build/bundle.js',
+            }
+          },
         concat: {
             options: {
                 separator: '\n\n',
@@ -85,7 +91,8 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( 'grunt-contrib-uglify' );
     grunt.loadNpmTasks( 'grunt-jsdoc' );
     grunt.loadNpmTasks( 'grunt-docco2' );
+    grunt.loadNpmTasks('grunt-browserify');
 
-    grunt.registerTask( 'default', [ 'concat', 'uglify' ] );
+    grunt.registerTask( 'default', [ 'concat','browserify', 'uglify' ] );
     grunt.registerTask( 'docs', [ 'jsdoc', 'docco' ] );
 };
